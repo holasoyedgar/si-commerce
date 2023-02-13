@@ -4,7 +4,7 @@ import { BsFillPersonFill, BsFillBookmarkFill, BsFillCartFill } from 'react-icon
 import '../assets/styles/NavBar.css';
 import { Container, Nav, Navbar } from 'react-bootstrap';
 
-const NavBar = () => {
+const NavBar = ({ greeting }) => {
     return (
     <Navbar expand="lg" bg="primary">
         <Container>
@@ -18,6 +18,7 @@ const NavBar = () => {
             <Nav.Link><BsFillPersonFill /> Mi Perfil</Nav.Link>
             <Nav.Link><BsFillBookmarkFill /> Mis guardados</Nav.Link>
             <Nav.Link><BsFillCartFill /> Carrito</Nav.Link>
+            <Nav.Link>{ greeting }</Nav.Link>
             </Navbar.Collapse>
         </Container>
     </Navbar>

@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <NavBar />
+    <NavBar greeting="Hola mundo"/>
   );
 }
 
