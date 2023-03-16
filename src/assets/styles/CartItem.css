@@ -1,0 +1,13 @@
+.card-image {
+    width: 100%;
+    height: 200px;
+}
+
+.cart-item-card {
+    margin-top: 10px;
+}
+
+.cart-item-row {
+    display: flex;
+    align-items: center;
+}

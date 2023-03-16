@@ -1,9 +1,10 @@
 import logo from '../assets/images/logo.png';
 import { AiFillHome } from 'react-icons/ai';
-import { BsFillBookmarkFill, BsFillCartFill } from 'react-icons/bs';
+import { BsFillCheckCircleFill } from 'react-icons/bs';
 import '../assets/styles/NavBar.css';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import CartWidget from './CartWidget';
 
 const NavBar = ({ greeting }) => {
     const categories = [{
@@ -30,14 +31,14 @@ const NavBar = ({ greeting }) => {
     <Navbar expand="lg" bg="primary">
         <Container>
             <Navbar.Brand>
-                <Link to="/">
+                <NavLink to="/">
                     <img src={logo} alt="SI-Commerce logo" className='logo'></img>
-                </Link>
+                </NavLink>
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav>
-                    <Nav.Link to='/' as={Link}>
+                    <Nav.Link to='/' as={NavLink}>
                         <AiFillHome />Home
                     </Nav.Link>
                     <NavDropdown title="Categorias">
@@ -45,15 +46,15 @@ const NavBar = ({ greeting }) => {
                             categories.map(category => (
                                 <NavDropdown.Item 
                                 key={category.categoryId} to={`/category/${category.categoryId}`} 
-                                as={Link}>                  
+                                as={NavLink}>                  
                                     {category.name}
                                 </NavDropdown.Item>
                             ))
                         }
                     </NavDropdown>
-                    <Nav.Link as={Link}><BsFillBookmarkFill /> Mis guardados</Nav.Link>
-                    <Nav.Link as={Link}><BsFillCartFill /> Carrito</Nav.Link>
-                    <Nav.Link as={Link}>{ greeting }</Nav.Link>
+                    <Nav.Link as={NavLink} to='/orders'><BsFillCheckCircleFill /> Mis compras</Nav.Link>
+                    <Nav.Link as={NavLink} to='/cart'><CartWidget /></Nav.Link>
+                    <Nav.Link as={NavLink}>{ greeting }</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Container>

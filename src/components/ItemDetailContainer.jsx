@@ -1,18 +1,35 @@
 import ItemDetail from "./ItemDetail";
-import allProducts from "../assets/database/db";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getProductsFromFirebase } from "../util/databaseUtils";
+import ReactLoading from 'react-loading';
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState({});
+  const [loading, setLoading] = useState(false);
   const { itemId } = useParams();
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const productFound = allProducts.find(product => product.id === parseInt(itemId));
-    setProduct(productFound);
+    const getProduct = async () => {
+      setLoading(true);
+      const products = await getProductsFromFirebase();
+      const productFound = products.find(product => product.id === itemId);
+      setLoading(false);
+      if (!productFound) {
+        navigate('/product-not-found')
+      } else {
+        setProduct(productFound);
+      }
+    }
+    getProduct(); 
   }, [itemId]);
+
   return (
-    <ItemDetail product={product} />
+      loading ? 
+      <ReactLoading type="bars" color="blue"/> :
+      <ItemDetail product={product} />
   )
 }
 

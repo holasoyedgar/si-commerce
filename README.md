@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# SI-Commerce
+## Descripción del proyecto
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este proyecto fue realizado para la comisión 39595 de React en Coderhouse.
+Es un e-commerce en el que se puede ser capaz de visualizar distintos productos, agregar al carrito,
+ejecutar una compra y ver compras anteriores.
 
-## Available Scripts
+El sitio posee estas opciones de navegabilidad:
+- **Home**, donde si se oprime, se va a la vista de todos los productos
+- **Categorías**, que es una lista desplegable, donde se puede seleccionar distintas categorías
+como Smartphones, Laptops, Fragancias, Cuidado de la piel, Comestibles y Decoración del hogar.
+    Al dar click en una categoría, muestra solo productos de la misma.
+- **Mis compras**, donde se pueden visualizar las compras realizadas con anterioridad y ver el estado de ellas.
+- **Carrito**, donde se puede acceder al carrito para realizar la compra.
 
-In the project directory, you can run:
 
-### `npm start`
+Se pueden agregar productos al carrito de compra de dos formas, la primera es oprimiendo el botón **Agregar al carrito**
+en la vista de todos los productos, esto agregará un solo producto al carrito,
+también se pueden agregar productos yendo al detalle de cada uno, seleccionando una cantidad
+y oprimiendo el botón **Agregar al carrito** con la cantidad solicitada.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+En este detalle se muestra una fotografía del producto, el nombre del mismo, la descripción, el precio, el stock,
+y los controles para agregar elementos al carrito.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Se hizo una validación para comprobar que el producto existe, sino, se regresa una vista de error.
 
-### `npm test`
+En la barra de navegación hay un widget del carrito, que muestra la cantidad de elementos en el carrito
+y que incrementa cada vez que se agrega un nuevo producto al carrito de compra.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Al ingresar al carrito, se muestra de cada producto una fotografía, su título, precio unitario, cantidad
+y precio final de ese producto, igualmente se muestra un total de la compra final y finalmente un formulario, 
+donde el usuario debe ingresar datos como su nombre, apellidos, teléfono, email y confirmación de email.
+Se agregaron validaciones para que estos campos deban estar llenos para la creación de la orden, además,
+ambos correos deben coincidir.
 
-### `npm run build`
+Cuando se da click al botón **Comprar**, se crea una nueva orden y se muestra el id de la orden en pantalla,
+3 segundos después, se vuelve a la vista principal.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Finalmente, si se va a **Mis órdenes**, se pueden visualizar las órdenes previamente realzadas, y se puede
+acceder a un detalle de la orden dando click en **Ver orden**, aquí se muestra el id de la orden, la fecha
+de la misma, y el detalle de los productos ordenados.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Librerías importantes utilizadas
+- Bootstrap y React bootstrap: Se agregó para usar estilos de la página, como la barra de navegación, 
+los botones, el widget, íconos, formularios, y tarjetas.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- dayjs: Es una librería que sirve para manejo de fechas, en este caso se usó dayjs para manejar las fechas de 
+firebase, ya que tienen un formato específico, además de convertir las fechas en un formato requerido.
 
-### `npm run eject`
+- Firebase: Se utilizó el servicio de Firestore como base de datos para almacenar los productos y las órdenes
+realizadas.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React router dom: Para la navegabilidad del sitio, renderizando cierto componente si se va a una ruta, además
+del uso de Link y NavLink que sirven para moverse entre sitios sin tener que cargar toda la página.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- React loading: Para renderizar pequeñas animaciones mientras los datos cargan en la vista, por ejemplo, cuando
+se obtienen los productos, el carrito, entre otros.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# Otros apuntes
+- Para renderizar los elementos en listas se uso de map, y se renderizaron los componentes correspondientes.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Se hizo uso de distintos eventos como onClick, cuando se hacía click en algún botón o onSubmit, cuando se envía
+el formulario.
 
-## Learn More
+- Se hizo uso de contexto de React en el carrito de compras, para hacer accesible la lista de producto a lo
+largo de diferentes componentes, por ejemplo el widget del carrito, en los componentes donde se agregan elementos
+al carrito y en la vista del carrito.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Para la navegabilidad se hizo uso de los distintos componentes de React router dom, como BrowserRouter, Routes, Route.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- También se uso el renderizado condicional para renderizar componentes dependiendo de condiciones, por ejemplo,
+cuando se estaban cargando los documentos de firebase se mostró una animación de cargando, una vez que cargaban estos
+documentos, se mostraba el componente requerido.
 
-### Code Splitting
+- Agrupé todas las operaciones de base de datos de Firebase en el archivo src/util/databaseUtils.js para mantener
+eso apartado de la lógica de los componentes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- También otras pequeñas funciones como calcular totales, formatos de moneda, entre otros los agregué a src/util/utils.js
+para igualmente apartar esta lógica de los componentes.
 
-### Analyzing the Bundle Size
+- Lo más complicado fue el manejo del carrito, porque se validaron distintos escenarios, donde si había elementos 
+existentes del mismo producto en el carrito, se incrementaba la cantidad de ese mismo producto, o si no,
+se agregaba un nuevo elemento al carrito, con esto se vio mucho el manejo del estado, y del contexto.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Se almacenaron las credenciales de Firebase en un archivo .env para que no sean accesibles cuando se suba 
+esa configuración a github.
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- [Video](https://www.youtube.com/watch?v=3pGnTS-tFHY) de la demostración de la aplicación.
