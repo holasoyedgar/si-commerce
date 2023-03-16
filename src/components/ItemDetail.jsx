@@ -3,9 +3,12 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap"
 import { currencyFormatter } from "../util/utils"
 import ItemCounter from "./ItemCounter";
 import '../assets/styles/ItemDetail.css';
+import { CartContext } from "../context/CartProvider";
+import { createProductReference } from "../util/databaseUtils";
 
 const ItemDetail = ({product}) => {
     const [counter, setCounter] = useState(1);
+    const [items, setItems] = CartContext();
     const increaseCounter = () => {
         if (counter < product.stock) {
             setCounter(counter + 1);
@@ -17,6 +20,35 @@ const ItemDetail = ({product}) => {
             setCounter(counter - 1);
         }
     }
+
+    const addItemToCart = (product) => {
+      const productReference = createProductReference(product.id);
+      let productFound = items.find((item) => item.product.id === productReference.id);
+      if (productFound) {
+        const newItems = items.map((item) => {
+          if (item.product.id === productFound.product.id) {
+            return {
+              ...item,
+              quantity: productFound['quantity'] + counter,
+              total: productFound['currentPrice'] * (productFound['quantity'] + counter)
+            };
+          } else {
+            return item;
+          }
+        });
+        
+        setItems(newItems);
+      } else {
+        const newProduct = {
+          product: productReference,
+          currentPrice: product.price,
+          quantity: counter,
+          total: product.price * counter
+        };
+  
+        setItems([...items, newProduct]);
+      }
+    };
 
   return (
     <Container>
@@ -35,7 +67,7 @@ const ItemDetail = ({product}) => {
                 onDecreaseCounter={decreaseCounter}
                 ></ItemCounter> <p>Hay {product.stock} disponibles</p>
 
-                <Button>Agregar al carrito</Button>
+                <Button onClick={() => addItemToCart(product)}>Agregar al carrito</Button>
             </Card.Body>
         </Card>
       </Col>
